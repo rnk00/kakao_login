@@ -47,24 +47,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-        // 앱 키 해시 가져오기 호출
-        getAppKeyHash()
     }
 
-    private fun getAppKeyHash() {   //카카오 로그인 시 필요한 해시 키 얻는 메소드
-        try {
-            val info: PackageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                val something: String = String(Base64.encode(md.digest(), 0))
-                Log.e("Hash key", something)
-            }
-        } catch (e: Exception) {
-            Log.e("name not found", e.toString())
-        }
-    }
 }
 
 @Composable
@@ -93,19 +77,3 @@ fun KakaoLoginView(viewModel: KakaoAuthViewModel) {
 }
 
 
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Kakao_loginTheme {
-        Greeting("Android")
-    }
-}

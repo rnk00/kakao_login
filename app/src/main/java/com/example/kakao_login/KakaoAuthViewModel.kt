@@ -1,5 +1,4 @@
 import android.app.Application
-import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -15,7 +14,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class KakaoAuthViewModel(application: Application) : AndroidViewModel(application) {
     companion object{
-        const val Tag = "KakaoAuthViewModel"
+        const val TAG = "KakaoAuthViewModel"
     }
 
     private val context = application.applicationContext
