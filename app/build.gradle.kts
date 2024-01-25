@@ -5,10 +5,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 val properties = Properties().apply {
-    project.rootProject.file("local.properties").inputStream().use { input ->
-        load(input)
-    }
-}
+    load(project.rootProject.file("local.properties").inputStream())
+}//local.properties에 있는 값들을 불러옴
 //Properties properties = new Properties()
 //properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
@@ -33,6 +31,7 @@ android {
         }
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao_native_app_key")}\"")
         resValue("string", "kakao_oauth_host","\"${properties.getProperty("kakao_oauth_host")}\"")
+        //res - string에 kakao_oauth_host가 만들어진 것 같은 효과
     }
 
     buildTypes {
@@ -56,6 +55,9 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
+    }
+    viewBinding{
+        enable = true
     }
     packaging {
         resources {

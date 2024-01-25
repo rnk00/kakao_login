@@ -1,79 +1,51 @@
 package com.example.kakao_login
 
-import KakaoAuthViewModel
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.kakao_login.ui.theme.Kakao_loginTheme
-import java.security.MessageDigest
+import com.example.kakao_login.databinding.ActivityMainBinding
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.user.UserApiClient
 
-class MainActivity : ComponentActivity() {
-
-    private val kakaoAuthViewModel : KakaoAuthViewModel by viewModels()
-
+class MainActivity : AppCompatActivity() {
+    private val TAG = "KakaoLoginExample"
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            Kakao_loginTheme {
-                // 테마에서 가져온 'background' 색상을 사용하는 표면 컨테이너
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    KakaoLoginView(kakaoAuthViewModel)
-                }
+        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.kakaoLoginButton.setOnClickListener {
+            login()
+        }
+    }
+    private fun login() {
+        // 카카오계정으로 로그인 공통 콜백 설정
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e(TAG, "카카오계정으로 로그인 실패", error)
+            } else if (token != null) {
+                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
             }
         }
-    }
 
-}
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                if (error != null) {
+                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
 
-@Composable
-fun KakaoLoginView(viewModel: KakaoAuthViewModel) {
+                    // 특정 상황(취소 등)에 대한 처리 추가
+                    // ...
 
-    val isLoggedIn = viewModel.isLoggedIn.collectAsState()
-    val loginStatusInfoTitle = if(isLoggedIn.value) "로그인 상태" else "로그아웃 상태"
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,//가운데 정렬
-        verticalArrangement = Arrangement.spacedBy(20.dp)//간격
-    ) {
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = {viewModel.kakaoLogin()}) {
-            Text(text = "카카오 로그인")
+                } else if (token != null) {
+                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    // 성공적인 로그인 처리 추가
+                }
+            }
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
-        Button(onClick = {viewModel.kakaoLogout()}) {
-            Text(text = "카카오 로그아웃")
-        }
-        Text(
-            text = loginStatusInfoTitle,
-            textAlign = TextAlign.Center, // textAlign 대신에 style 사용
-            fontSize = 20.sp
-        )
     }
 }
-
-
