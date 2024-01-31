@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId = "com.example.kakao_login"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -67,7 +67,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation ("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -83,12 +83,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation ("com.kakao.sdk:v2-all:2.19.0")// 전체 모듈 설치, 2.11.0 버전부터 지원
     implementation ("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
-    implementation ("com.kakao.sdk:v2-talk:2.19.0") // 친구, 메시지(카카오톡)
-    implementation ("com.kakao.sdk:v2-share:2.19.0") // 메시지(카카오톡 공유)
-    implementation ("com.kakao.sdk:v2-friend:2.19.0") // 카카오톡 소셜 피커, 리소스 번들 파일 포함
-    implementation ("com.kakao.sdk:v2-navi:2.19.0") // 카카오내비
-    implementation ("com.kakao.sdk:v2-cert:2.19.0") // 카카오 인증서비스
     //settings.gradle과 같은 곳에서 복붙
 }

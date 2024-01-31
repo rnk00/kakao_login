@@ -1,14 +1,17 @@
 package com.example.kakao_login
 
 import android.app.Application
+import android.util.Log
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 
 class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
         //Kakao SDK 초기화
-        KakaoSdk.init(this, "66c326deead3978e4a22ff91eddc0c36")
-        //공유하면 안 되는 키를 local property에 넣고 가져다가 쓴다
+        KakaoSdk.init(this, "3fb9a572bb1f2e3cd66d370d2f7888dd")
+
+        Log.d("hash", "keyhash : ${Utility.getKeyHash(this)}")
     }
 }

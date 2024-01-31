@@ -6,11 +6,12 @@
 
     <application
         android:name=".GlobalApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:hardwareAccelerated="false"
         android:supportsRtl="true"
         android:theme="@style/Theme.Kakao_login"
         tools:targetApi="31">
@@ -37,7 +38,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="oauth"
-                    android:scheme="kakao66c326deead3978e4a22ff91eddc0c36" />
+                    android:scheme="kakao3fb9a572bb1f2e3cd66d370d2f7888dd" />
             </intent-filter>
         </activity>
     </application>
